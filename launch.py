@@ -84,9 +84,13 @@ class webui:
                 outputs=[output_0, output_1, output_2, output_3, output_file]
             )
 
-        self.demo.launch(share)
+        self.demo.launch(share=share)
 
 
 if __name__ == "__main__":
     ui = webui()
-    ui.launch(sys.argv[0])
+    print(sys.argv[1])
+    if sys.argv[1] == "share":
+        ui.launch(share=True)
+    else:
+        ui.launch(share=False)

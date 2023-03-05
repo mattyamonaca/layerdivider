@@ -89,8 +89,4 @@ class webui:
 
 if __name__ == "__main__":
     ui = webui()
-    print(sys.argv[1])
-    if sys.argv[1] == "share":
-        ui.launch(share=True)
-    else:
-        ui.launch(share=False)
+    ui.launch(share=False)

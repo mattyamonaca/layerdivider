@@ -7,6 +7,7 @@ from pytoshop import layers
 import pytoshop
 
 import random, string
+import os
 
 def randomname(n):
    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
@@ -44,9 +45,10 @@ def save_psd(input_image, layers, names, modes):
           psd = add_psd(psd, output, names[idx] + str(num), modes[idx])
           
 
+  path = os.getcwd()
   name = randomname(10)
 
-  with open(f"./output/output_{name}.psd", 'wb') as fd2:
+  with open(f"{path}/output/output_{name}.psd", 'wb') as fd2:
       psd.write(fd2)  
 
-  return f"./output/output_{name}.psd"
+  return f"{path}/output/output_{name}.psd"

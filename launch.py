@@ -2,7 +2,6 @@ import gradio as gr
 import sys
 sys.path.append("./scripts/")
 
-import os
 from scripts.convertor import pil2cv, cv2pil, df2bgra
 from scripts.processor import get_base, get_normal_layer, get_composite_layer
 from scripts.utils import save_psd
@@ -16,9 +15,7 @@ class webui:
     def __init__(self):
         self.demo = gr.Blocks()
         
-    def divide_layer(self, input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode, split_bg):
-        print(split_bg)
-        print(layer_mode)
+    def divide_layer(self, input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode):
         image = pil2cv(input_image)
         self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 
@@ -47,7 +44,6 @@ class webui:
             return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
         else:
             return None
-        #base_layer_list = [cv2pil(layer) for layer in get_base_layer(df)]
 
         
     
@@ -55,7 +51,7 @@ class webui:
         if self.df is None:
             self.divide_layer()
 
-    def launch(self):
+    def launch(self, share):
         with self.demo:
             with gr.Row():
                 with gr.Column():
@@ -66,7 +62,7 @@ class webui:
                         ciede_threshold = gr.Slider(1, 50, value=15, step=1, label="ciede_threshold", show_label=True)
                         blur_size = gr.Slider(1, 20, value=5, label="blur_size", show_label=True)
                         layer_mode = gr.Dropdown(["normal", "composite"], value = "normal", label="output_layer_mode", show_label=True)
-                        split_bg = gr.Checkbox(label="split bg", show_label=True)
+                        #split_bg = gr.Checkbox(label="split bg", show_label=True)
                         
 
                     submit = gr.Button(value="Submit")
@@ -84,13 +80,13 @@ class webui:
                         output_file = gr.File()
             submit.click(
                 self.divide_layer, 
-                inputs=[input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode, split_bg], 
+                inputs=[input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode], 
                 outputs=[output_0, output_1, output_2, output_3, output_file]
             )
 
-        self.demo.launch()
+        self.demo.launch(share)
 
 
 if __name__ == "__main__":
     ui = webui()
-    ui.launch()
+    ui.launch(sys.argv[0])

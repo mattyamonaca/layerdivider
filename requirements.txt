@@ -1,0 +1,8 @@
+opencv-python==4.7.0.68
+pandas==1.5.3
+gradio==3.16.2
+scikit-learn==1.2.1
+numpy==1.24.2
+scikit-image==0.19.3
+Pillow==9.4.0
+tqdm==4.63.0

@@ -1,14 +1,16 @@
 
-import cv2
-from sklearn.cluster import KMeans
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage import color 
 from convertor import df2rgba
 
 from pytoshop import layers
-from pytoshop.enums import BlendMode
 import pytoshop
+
+import random, string
+
+def randomname(n):
+   randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
+   return ''.join(randlst)
 
 
 def img_plot(df):
@@ -42,7 +44,9 @@ def save_psd(input_image, layers, names, modes):
           psd = add_psd(psd, output, names[idx] + str(num), modes[idx])
           
 
-  with open("./output.psd", 'wb') as fd2:
+  name = randomname(10)
+
+  with open(f"./output/output_{name}.psd", 'wb') as fd2:
       psd.write(fd2)  
 
-  return "./output.psd"
+  return f"./output/output_{name}.psd"

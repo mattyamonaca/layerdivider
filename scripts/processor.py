@@ -4,8 +4,6 @@ from sklearn.cluster import KMeans
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from scipy import stats
-import timeit
 from skimage import color 
 from convertor import skimage_rgb2lab, df2rgba, rgb2df, hsv2df
 from utils import img_plot

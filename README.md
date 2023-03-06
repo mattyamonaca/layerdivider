@@ -19,10 +19,10 @@ A tool to divide a single illustration into a layered structure.
 8. ベースレイヤーとオリジナルの色差に基づいて効果レイヤーを算出
 
 # パラメータ説明
-- roop: 処理2-4を繰り返す回数
-- init_cluster: 処理1で生成するクラスタの数（大きいほど細かくレイヤー分けされる）
-- ciede_threshold: 処理2でどの程度色が類似していたらクラスタを結合するか決める閾値
-- blur_size: 処理3でかけるブラー処理の大きさ（大きいほど強くぼかす）
-- output_layer_mode
- -- normal: 通常レイヤーのみで出力されるPSDを構成
- -- composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成
+* roop: 処理2-4を繰り返す回数
+* init_cluster: 処理1で生成するクラスタの数（大きいほど細かくレイヤー分けされる）
+* ciede_threshold: 処理2でどの程度色が類似していたらクラスタを結合するか決める閾値
+* blur_size: 処理3でかけるブラー処理の大きさ（大きいほど強くぼかす）
+* output_layer_mode
+ * normal: 通常レイヤーのみで出力されるPSDを構成
+ * composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成

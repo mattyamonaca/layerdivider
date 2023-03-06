@@ -1,13 +1,12 @@
 # layerdivider
 A tool to divide a single illustration into a layered structure.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb)
+
 ![スクリーンショット 2023-03-07 034638](https://user-images.githubusercontent.com/48423148/223202706-5c6e9108-0cf4-40dc-b840-9c3df3d540da.png)
 
 ![スクリーンショット 2023-03-07 035056](https://user-images.githubusercontent.com/48423148/223203504-f443f7a7-4123-42e4-b0fb-cabde491712a.png)
 
-# 実行用Colaboratory
-リンク先のColaboratoryからUIを起動できます
-- https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb
 
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング
@@ -25,5 +24,5 @@ A tool to divide a single illustration into a layered structure.
 - ciede_threshold: 処理2でどの程度色が類似していたらクラスタを結合するか決める閾値
 - blur_size: 処理3でかけるブラー処理の大きさ（大きいほど強くぼかす）
 - output_layer_mode
- - normal: 通常レイヤーのみで出力されるPSDを構成
- - composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成
+ -- normal: 通常レイヤーのみで出力されるPSDを構成
+ -- composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成

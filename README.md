@@ -1,6 +1,9 @@
 # layerdivider
 A tool to divide a single illustration into a layered structure.
 
+![スクリーンショット 2023-03-07 034638](https://user-images.githubusercontent.com/48423148/223202706-5c6e9108-0cf4-40dc-b840-9c3df3d540da.png)
+
+
 # 実行用Colaboratory
 リンク先のColaboratoryからUIを起動できます
 - https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb

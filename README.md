@@ -1,14 +1,11 @@
 # layerdivider
 A tool to divide a single illustration into a layered structure.
 
-
-https://user-images.githubusercontent.com/48423148/223340332-4fbb9e40-687f-4aa8-8c9c-46f01ce780b8.mp4
-
-
-
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb)
 
 ![スクリーンショット 2023-03-07 034638](https://user-images.githubusercontent.com/48423148/223202706-5c6e9108-0cf4-40dc-b840-9c3df3d540da.png)
+
+https://user-images.githubusercontent.com/48423148/223340332-4fbb9e40-687f-4aa8-8c9c-46f01ce780b8.mp4
 
 ![スクリーンショット 2023-03-07 035056](https://user-images.githubusercontent.com/48423148/223203504-f443f7a7-4123-42e4-b0fb-cabde491712a.png)
 

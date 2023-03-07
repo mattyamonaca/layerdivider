@@ -25,7 +25,5 @@ A tool to divide a single illustration into a layered structure.
 * blur_size: 処理3でかけるブラー処理の大きさ（大きいほど強くぼかす）
 * output_layer_mode
     * normal: 通常レイヤーのみで出力されるPSDを構成
-    ![スクリーンショット_20230307_043239](https://user-images.githubusercontent.com/48423148/223338536-ccfb9279-7205-48f7-966a-bffaba234cf1.png)
-
     * composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成
-    ![スクリーンショット_20230307_044153](https://user-images.githubusercontent.com/48423148/223338564-5e32b9ba-20db-4d7e-9fa3-13361d984a71.png)
+

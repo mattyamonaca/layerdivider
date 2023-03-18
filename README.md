@@ -11,9 +11,9 @@ A tool to divide a single illustration into a layered structure.
 https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-8d68-86274f1f36eb.mp4
 
 # local install
-1. run `install.ps1` first time use.
+1. run `install.ps1` first time use, waiting for installation to complete.
 2. run `run_gui.ps1` to open local gui.
-3. open webstie localhost:port to use. 
+3. open webstie localhost:port to use(The default is localhost:7860). 
 
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング

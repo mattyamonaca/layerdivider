@@ -10,7 +10,19 @@ A tool to divide a single illustration into a layered structure.
 
 https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-8d68-86274f1f36eb.mp4
 
+# Local Install
+# Required Dependencies
+Python 3.10.8 and Git
 
+# Windows Installation
+1. 
+``` 
+git clone https://github.com/mattyamonaca/layerdivider
+```
+
+2. run `install.ps1` first time use, waiting for installation to complete.
+3. run `run_gui.ps1` to open local gui.
+4. open webstie localhost:port to use(The default is localhost:7860). 
 
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング
@@ -22,6 +34,16 @@ https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-
 7. ベースレイヤーの各色を、入力された画像のクラスタ毎の平均色で塗りなおし
 8. ベースレイヤーとオリジナルの色差に基づいて効果レイヤーを算出
 
+# Processing content
+1. Cluster the input image based on RGB information at the pixel level.
+2. Merge clusters with similar color similarity (based on CIEDE2000 criteria).
+3. Smooth the input image using a blur process.
+4. For each cluster, calculate the average color value after blurring and repaint all pixels with this calculated value.
+5. Repeat steps 2-4 for a specified number of times.
+6. Create a base layer based on the final clustering result.
+7. Repaint each color in the base layer with the average color of each cluster in the input image.
+8. Calculate an effect layer based on differences between the base layer and original colors.
+
 # パラメータ説明
 * roop: 処理2-4を繰り返す回数
 * init_cluster: 処理1で生成するクラスタの数（大きいほど細かくレイヤー分けされる）
@@ -31,3 +53,11 @@ https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-
     * normal: 通常レイヤーのみで出力されるPSDを構成
     * composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成
 
+# Parameter Description
+* roop: Number of times to repeat processing 2-4.
+* init_cluster: Number of clusters generated in process 1 (the larger the number, the more finely layered it is).
+* ciede_threshold: Threshold for determining when to combine clusters in process 2 based on how similar their colors are.
+* blur_size: Size of the blur applied in process 3 (the larger the size, the stronger the blurring effect).
+* output_layer_mode:
+    * normal: Constructs a PSD that only includes normal layers.
+    * composite: Constructs a PSD by combining normal layers with screen, multiply, subtract and add layers.

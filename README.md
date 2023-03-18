@@ -10,12 +10,12 @@ A tool to divide a single illustration into a layered structure.
 
 https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-8d68-86274f1f36eb.mp4
 
-#Local Install
-#Required Dependencies
+# Local Install
+# Required Dependencies
 Python 3.10.8 and Git
 
-#Windows Installation
-
+# Windows Installation
+1. 
 ``` 
 git clone https://github.com/mattyamonaca/layerdivider
 ```

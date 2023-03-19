@@ -22,7 +22,7 @@ git clone https://github.com/mattyamonaca/layerdivider
 
 2. run `install.ps1` first time use, waiting for installation to complete.
 3. run `run_gui.ps1` to open local gui.
-4. open webstie localhost:port to use(The default is localhost:7860). 
+4. open website localhost:port to use(The default is localhost:7860). 
 
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング

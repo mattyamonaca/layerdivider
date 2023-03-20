@@ -1,8 +1,5 @@
 # layerdivider
 A tool to divide a single illustration into a layered structure.
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb)
-
 ![スクリーンショット 2023-03-07 034638](https://user-images.githubusercontent.com/48423148/223202706-5c6e9108-0cf4-40dc-b840-9c3df3d540da.png)
 
 ![スクリーンショット_20230307_035053](https://user-images.githubusercontent.com/48423148/223345165-e4e2e7f6-059f-445a-ac3d-2c9c3ecd094a.png)
@@ -10,11 +7,20 @@ A tool to divide a single illustration into a layered structure.
 
 https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-8d68-86274f1f36eb.mp4
 
-# Local Install
-# Required Dependencies
+# Install
+## use Google Golab
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb)
+1. Click colab button.
+2. Run all cells.
+3. Click addres(Running on public URL: https://92a07519-ac3e-487b.gradio.live).
+
+
+## Local Install
+### Windows Installation
+#### Required Dependencies
 Python 3.10.8 and Git
 
-# Windows Installation
+#### install Step
 1. 
 ``` 
 git clone https://github.com/mattyamonaca/layerdivider

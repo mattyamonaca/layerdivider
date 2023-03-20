@@ -34,7 +34,7 @@ git clone https://github.com/mattyamonaca/layerdivider
 If you installed Python launcher (py command), you can use another method for installation.
 1. Download this repository, for example by running
 ``` 
-https://github.com/mattyamonaca/layerdivider.git
+git clone https://github.com/mattyamonaca/layerdivider.git
 ```
 2. Run `install_with_launcher.ps1` instead of `install.ps1` to install dependent packages.
 3. Run `run_gui.ps1` to open local gui.

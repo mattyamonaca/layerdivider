@@ -12,7 +12,7 @@ https://user-images.githubusercontent.com/48423148/223344286-bf2dff31-3fc5-4970-
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mattyamonaca/layerdivider/blob/main/layerdivider_launch.ipynb)
 1. Click colab button.
 2. Run all cells.
-3. Click addres(Running on public URL: https://xxxxxxx.gradio.live).
+3. Click output addres(Running on public URL: https: //xxxxxxx.gradio.live).
 
 
 ## Local Install

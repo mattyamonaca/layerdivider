@@ -30,7 +30,7 @@ git clone https://github.com/mattyamonaca/layerdivider
 3. run `run_gui.ps1` to open local gui.
 4. open website localhost:port to use(The default is localhost:7860). 
 
-#### Optional: For Python Launcher User
+#### Optional: For Python Launcher Users
 If you installed Python launcher (py command), you can use another method for installation.
 1. download this repository, for example by running
 ``` PowerShell

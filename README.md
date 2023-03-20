@@ -30,6 +30,10 @@ git clone https://github.com/mattyamonaca/layerdivider
 3. run `run_gui.ps1` to open local gui.
 4. open website localhost:port to use(The default is localhost:7860). 
 
+#### Optional: For Python Launcher Users
+If you use Python launcher (py command) for executing Python, you should use install_with_launcher.ps1 instead of install.ps1.
+The reason is install_with_launcher.ps1 uses py command for executing venv module, while install.ps1 uses python command.
+
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング
 2. 色の類似度（CIEDE2000基準）が近いクラスタを統合

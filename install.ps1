@@ -1,3 +1,5 @@
+Set-Location $PSScriptRoot
+
 if (!(Test-Path -Path "venv")) {
     Write-Output  "Creating venv for python..."
     python -m venv venv

@@ -31,18 +31,8 @@ git clone https://github.com/mattyamonaca/layerdivider
 4. open website localhost:port to use(The default is localhost:7860). 
 
 #### Optional: For Python Launcher Users
-If you installed Python launcher (py command), you can use another method for installation.
-1. Download this repository, for example by running
-``` 
-git clone https://github.com/mattyamonaca/layerdivider.git
-```
-2. Run `install_with_launcher.ps1` instead of `install.ps1` to install dependent packages.
-3. Run `run_gui.ps1` to open local gui.
-4. After a few moments, PowerShell outputs URL as below:
-```
-Running on local URL: http://127.0.0.1:7860
-```
-Then open this URL by your browser.
+If you use Python launcher (py command) for executing Python, you should use install_with_launcher.ps1 instead of install.ps1.
+The reason is install_with_launcher.ps1 uses py command for executing venv module, while install.ps1 uses python command.
 
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング

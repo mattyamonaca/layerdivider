@@ -33,13 +33,13 @@ git clone https://github.com/mattyamonaca/layerdivider
 #### Optional: For Python Launcher Users
 If you installed Python launcher (py command), you can use another method for installation.
 1. download this repository, for example by running
-``` PowerShell
-git clone https://github.com/mattyamonaca/layerdivider
+``` 
+https://github.com/mattyamonaca/layerdivider.git
 ```
 2. run `install_with_launcher.ps1` instead of `install.ps1` to install dependent packages.
 3. run `run_gui.ps1` to open local gui.
 4. wait a few moments; then PowerShell outputs URL as below:
-```PowerShell
+```
 Running on local URL: http://127.0.0.1:7860
 ```
 Then open this URL by your browser.

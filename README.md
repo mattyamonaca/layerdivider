@@ -30,6 +30,20 @@ git clone https://github.com/mattyamonaca/layerdivider
 3. run `run_gui.ps1` to open local gui.
 4. open website localhost:port to use(The default is localhost:7860). 
 
+## Optional: For Python Launcher User
+If you installed Python launcher (py command), you can use another method for installation.
+1. download this repository, for example by running
+``` PowerShell
+git clone https://github.com/mattyamonaca/layerdivider
+```
+2. run `install_with_launcher.ps1` instead of `install.ps1` to install dependent packages.
+3. run `run_gui.ps1` to open local gui.
+4. wait a few moments; then PowerShell outputs URL as below:
+```PowerShell
+Running on local URL: http://127.0.0.1:7860
+```
+Then open this URL by your browser.
+
 # 処理内容
 1. 入力された画像をピクセル単位でRGB情報に従いクラスタリング
 2. 色の類似度（CIEDE2000基準）が近いクラスタを統合

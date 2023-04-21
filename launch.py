@@ -15,11 +15,11 @@ class webui:
     def __init__(self):
         self.demo = gr.Blocks()
         
-    def divide_layer(self, input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode):
+    def divide_layer(self, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode):
         image = pil2cv(input_image)
         self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 
-        df = get_base(self.input_image, roop, init_cluster, ciede_threshold, blur_size, False)        
+        df = get_base(self.input_image, loops, init_cluster, ciede_threshold, blur_size, False)        
         
         base_image = cv2pil(df2bgra(df))
         image = cv2pil(image)
@@ -57,7 +57,7 @@ class webui:
                 with gr.Column():
                     input_image = gr.Image(type="pil")
                     with gr.Box():
-                        roop = gr.Slider(1, 20, value=3, step=1, label="roop", show_label=True)
+                        loops = gr.Slider(1, 20, value=3, step=1, label="loops", show_label=True)
                         init_cluster = gr.Slider(1, 50, value=10, step=1, label="init_cluster", show_label=True)
                         ciede_threshold = gr.Slider(1, 50, value=15, step=1, label="ciede_threshold", show_label=True)
                         blur_size = gr.Slider(1, 20, value=5, label="blur_size", show_label=True)
@@ -80,7 +80,7 @@ class webui:
                         output_file = gr.File()
             submit.click(
                 self.divide_layer, 
-                inputs=[input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode], 
+                inputs=[input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode], 
                 outputs=[output_0, output_1, output_2, output_3, output_file]
             )
 

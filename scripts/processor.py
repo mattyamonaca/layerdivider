@@ -105,14 +105,14 @@ def split_img_df(df, show=False):
   return img_list
 
 
-def get_base(img, roop, cls_num, threshold, size, debug=False):
+def get_base(img, loops, cls_num, threshold, size, debug=False):
   #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
   df = rgb2df(img)
   output_df = df.copy()
   cls = KMeans(n_clusters = cls_num)
   cls.fit(df[["r","g","b"]])
   df["label"] = cls.labels_
-  for i in range(roop):
+  for i in range(loops):
     if i !=0:
       img = df2rgba(df).astype(np.uint8)
     blur_list, mean_list, cls_list = get_blur_cls(img, df["label"], size)

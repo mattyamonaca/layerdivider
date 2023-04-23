@@ -110,6 +110,7 @@ def split_img_df(df, show=False):
   return img_list
 
 
+<<<<<<< HEAD
 def get_base(img, roop, cls_num, threshold, size, bg_split = True, debug=False):
   #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
   if bg_split == False:
@@ -147,6 +148,27 @@ def get_base(img, roop, cls_num, threshold, size, bg_split = True, debug=False):
 
   output_df = pd.concat(output_list).sort_index()
 
+=======
+def get_base(img, loops, cls_num, threshold, size, debug=False):
+  #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
+  df = rgb2df(img)
+  output_df = df.copy()
+  cls = KMeans(n_clusters = cls_num)
+  cls.fit(df[["r","g","b"]])
+  df["label"] = cls.labels_
+  for i in range(loops):
+    if i !=0:
+      img = df2rgba(df).astype(np.uint8)
+    blur_list, mean_list, cls_list = get_blur_cls(img, df["label"], size)
+    ciede_df = calc_ciede(mean_list, cls_list)
+    merge_dict = get_cls_update(ciede_df, df, threshold)
+    update_df, color_dict = get_update_df(df, merge_dict, mean_list, cls_list)
+    df = update_df
+    if debug==True:
+      img_plot(df)
+
+  output_df["label"] = df["label"]
+>>>>>>> ed80020c3e61f3455b487f13c9dab365e25285c6
   mean_list = []
   cls_list = list(output_df["label"].unique())
   for cls_no in tqdm(cls_list):

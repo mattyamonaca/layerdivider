@@ -55,7 +55,7 @@ The reason is install_with_launcher.ps1 uses py command for executing venv modul
 8. Calculate an effect layer based on differences between the base layer and original colors.
 
 # パラメータ説明
-* roop: 処理2-4を繰り返す回数
+* loops: 処理2-4を繰り返す回数
 * init_cluster: 処理1で生成するクラスタの数（大きいほど細かくレイヤー分けされる）
 * ciede_threshold: 処理2でどの程度色が類似していたらクラスタを結合するか決める閾値
 * blur_size: 処理3でかけるブラー処理の大きさ（大きいほど強くぼかす）
@@ -64,7 +64,7 @@ The reason is install_with_launcher.ps1 uses py command for executing venv modul
     * composite: 通常レイヤー、スクリーンレイヤー、乗算レイヤー、減算レイヤー、加算レイヤーを組み合わせて出力されるPSDを構成
 
 # Parameter Description
-* roop: Number of times to repeat processing 2-4.
+* loops: Number of times to repeat processing 2-4.
 * init_cluster: Number of clusters generated in process 1 (the larger the number, the more finely layered it is).
 * ciede_threshold: Threshold for determining when to combine clusters in process 2 based on how similar their colors are.
 * blur_size: Size of the blur applied in process 3 (the larger the size, the stronger the blurring effect).

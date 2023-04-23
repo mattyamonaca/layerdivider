@@ -5,9 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from skimage import color 
-from convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df
-from utils import img_plot
-from bg_remover import get_foreground
+from scripts.convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df, rgb2df
+from scripts.utils import img_plot
+from scripts.bg_remover import get_foreground
 
 def calc_ciede(mean_list, cls_list):
   cls_no = []

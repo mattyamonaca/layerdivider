@@ -19,11 +19,7 @@ class webui:
         image = pil2cv(input_image)
         self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 
-<<<<<<< HEAD
-        df = get_base(self.input_image, roop, init_cluster, ciede_threshold, blur_size)        
-=======
         df = get_base(self.input_image, loops, init_cluster, ciede_threshold, blur_size, False)        
->>>>>>> ed80020c3e61f3455b487f13c9dab365e25285c6
         
         base_image = cv2pil(df2bgra(df))
         image = cv2pil(image)

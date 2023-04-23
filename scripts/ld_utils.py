@@ -41,19 +41,17 @@ def add_psd(psd, img, name, mode):
   psd.layer_and_mask_info.layer_info.layer_records.append(new_layer)
   return psd
 
-def save_psd(input_image, layers, names, modes):
+def save_psd(input_image, layers, names, modes, output_dir):
   psd = pytoshop.core.PsdFile(num_channels=3, height=input_image.shape[0], width=input_image.shape[1])
 
   for idx, img_list in enumerate(layers):
       for num, output in enumerate(img_list):
           psd = add_psd(psd, output, names[idx] + str(num), modes[idx])
           
-
-  path = os.getcwd()
   name = randomname(10)
 
-  with open(f"{path}/output/output_{name}.psd", 'wb') as fd2:
+  with open(f"{output_dir}/output_{name}.psd", 'wb') as fd2:
       psd.write(fd2)  
 
-  return f"{path}/output/output_{name}.psd"
+  return f"{output_dir}/output_{name}.psd"
 

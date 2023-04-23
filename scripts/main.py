@@ -20,7 +20,7 @@ from pytoshop.enums import BlendMode
 
 model_cache = OrderedDict()
 output_dir = os.path.join(
-    extensions_dir, "layerdivider/output/")
+    extensions_dir, "layerdivider/output")
 
 class Script(scripts.Script):
   def __init__(self) -> None:
@@ -49,7 +49,8 @@ def divide_layer(input_image, roop, init_cluster, ciede_threshold, blur_size, la
             input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list, subtract_layer_list, addition_layer_list],
             ["base", "screen", "multiply", "subtract", "addition"],
-            [BlendMode.normal, BlendMode.screen, BlendMode.multiply, BlendMode.subtract, BlendMode.linear_dodge]
+            [BlendMode.normal, BlendMode.screen, BlendMode.multiply, BlendMode.subtract, BlendMode.linear_dodge],
+            output_dir
         )
         base_layer_list = [cv2pil(layer) for layer in base_layer_list]
         return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
@@ -59,7 +60,8 @@ def divide_layer(input_image, roop, init_cluster, ciede_threshold, blur_size, la
             input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list],
             ["base", "bright", "shadow"],
-            [BlendMode.normal, BlendMode.normal, BlendMode.normal]
+            [BlendMode.normal, BlendMode.normal, BlendMode.normal],
+            output_dir
         )
         return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
     else:

@@ -114,7 +114,7 @@ def get_base(img, loops, cls_num, threshold, size, debug=False):
   #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
   df = rgb2df(img)
   output_df = df.copy()
-  cls = KMeans(n_clusters = cls_num)
+  cls = MiniBatchKMeans(n_clusters = cls_num)
   cls.fit(df[["r","g","b"]])
   df["label"] = cls.labels_
   for i in range(loops):

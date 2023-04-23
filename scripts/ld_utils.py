@@ -1,7 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scripts.convertor import df2rgba
+from scripts.ld_convertor import df2rgba
 
 from pytoshop import layers
 import pytoshop

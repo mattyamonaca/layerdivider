@@ -3,6 +3,9 @@ import launch
 if not launch.is_installed("cython"):
     launch.run_pip("install cython", "Installing cython...")
 
+if not launch.is_installed("packbits"):
+    launch.run_pip("install packbits", "Installing packbits...")
+
 if not launch.is_installed("onnx"):
     launch.run_pip("install onnx", "Installing onnx...")
 

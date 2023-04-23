@@ -5,8 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from skimage import color 
-from scripts.convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df, rgb2df
-from scripts.utils import img_plot
+from scripts.ld_convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df, rgb2df
+from scripts.ld_utils import img_plot
 from scripts.bg_remover import get_foreground
 
 def calc_ciede(mean_list, cls_list):
@@ -110,9 +110,9 @@ def split_img_df(df, show=False):
   return img_list
 
 
-def get_base(img, loops, cls_num, threshold, size, debug=False):
+def get_base(img, loops, cls_num, threshold, size, split_bg=True, debug=False):
   #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
-  df = rgb2df(img)
+  df = rgba2df(img)
   output_df = df.copy()
   cls = MiniBatchKMeans(n_clusters = cls_num)
   cls.fit(df[["r","g","b"]])

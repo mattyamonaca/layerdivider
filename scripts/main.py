@@ -9,9 +9,9 @@ import gradio as gr
 import modules.scripts as scripts
 from modules import script_callbacks
 
-from scripts.processor import get_base, get_normal_layer, get_composite_layer
-from scripts.convertor import pil2cv, cv2pil, df2bgra
-from scripts.utils import save_psd
+from scripts.ld_processor import get_base, get_normal_layer, get_composite_layer
+from scripts.ld_convertor import pil2cv, cv2pil, df2bgra
+from scripts.ld_utils import save_psd
 from modules.paths_internal import extensions_dir
 from collections import OrderedDict
 
@@ -20,7 +20,7 @@ from pytoshop.enums import BlendMode
 
 model_cache = OrderedDict()
 output_dir = os.path.join(
-    extensions_dir, "LayerDivider/output/")
+    extensions_dir, "layerdivider/output/")
 
 class Script(scripts.Script):
   def __init__(self) -> None:
@@ -35,18 +35,18 @@ class Script(scripts.Script):
   def ui(self, is_img2img):
     return ()
 
-def divide_layer(self, input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode):
+def divide_layer(input_image, roop, init_cluster, ciede_threshold, blur_size, layer_mode):
     image = pil2cv(input_image)
-    self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
+    input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 
-    df = get_base(self.input_image, roop, init_cluster, ciede_threshold, blur_size)        
+    df = get_base(input_image, roop, init_cluster, ciede_threshold, blur_size)        
     
     base_image = cv2pil(df2bgra(df))
     image = cv2pil(image)
     if layer_mode == "composite":
         base_layer_list, shadow_layer_list, bright_layer_list, addition_layer_list, subtract_layer_list = get_composite_layer(self.input_image, df)
         filename = save_psd(
-            self.input_image,
+            input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list, subtract_layer_list, addition_layer_list],
             ["base", "screen", "multiply", "subtract", "addition"],
             [BlendMode.normal, BlendMode.screen, BlendMode.multiply, BlendMode.subtract, BlendMode.linear_dodge]
@@ -54,9 +54,9 @@ def divide_layer(self, input_image, roop, init_cluster, ciede_threshold, blur_si
         base_layer_list = [cv2pil(layer) for layer in base_layer_list]
         return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
     elif layer_mode == "normal":
-        base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(self.input_image, df)
+        base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(input_image, df)
         filename = save_psd(
-            self.input_image,
+            input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list],
             ["base", "bright", "shadow"],
             [BlendMode.normal, BlendMode.normal, BlendMode.normal]

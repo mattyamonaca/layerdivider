@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans, MiniBatchKMeans
 
-from scripts.convertor import rgb2df, df2rgba
+from scripts.ld_convertor import rgb2df, df2rgba
 
 import gradio as gr
 import huggingface_hub

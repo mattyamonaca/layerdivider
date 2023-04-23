@@ -2,9 +2,9 @@ import gradio as gr
 import sys
 sys.path.append("./scripts/")
 
-from scripts.convertor import pil2cv, cv2pil, df2bgra
-from scripts.processor import get_base, get_normal_layer, get_composite_layer
-from scripts.utils import save_psd
+from scripts.ld_convertor import pil2cv, cv2pil, df2bgra
+from scripts.ld_processor import get_base, get_normal_layer, get_composite_layer
+from scripts.ld_utils import save_psd
 
 import cv2
 from pytoshop.enums import BlendMode

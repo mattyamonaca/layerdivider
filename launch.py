@@ -19,7 +19,7 @@ class webui:
         image = pil2cv(input_image)
         self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 
-        df = get_base(self.input_image, roop, init_cluster, ciede_threshold, blur_size, False)        
+        df = get_base(self.input_image, roop, init_cluster, ciede_threshold, blur_size)        
         
         base_image = cv2pil(df2bgra(df))
         image = cv2pil(image)
@@ -44,12 +44,6 @@ class webui:
             return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
         else:
             return None
-
-        
-    
-    def get_base_layer_list(self):
-        if self.df is None:
-            self.divide_layer()
 
     def launch(self, share):
         with self.demo:

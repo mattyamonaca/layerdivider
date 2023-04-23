@@ -1,12 +1,13 @@
 import cv2
 import pandas as pd
-from sklearn.cluster import KMeans
+from sklearn.cluster import MiniBatchKMeans
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from skimage import color 
-from convertor import skimage_rgb2lab, df2rgba, rgb2df, hsv2df
+from convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df
 from utils import img_plot
+from bg_remover import get_foreground
 
 def calc_ciede(mean_list, cls_list):
   cls_no = []
@@ -34,7 +35,11 @@ def get_mask(df, cls_no):
 
 def fill_mean_color(img_df, mask):
   df_img = df2rgba(img_df).astype(np.uint8)
-  mean = cv2.mean(df_img, mask)
+  if len(df_img.shape) == 3:
+      mask = np.repeat(mask[:, :, np.newaxis], df_img.shape[-1], axis=-1)
+  masked_img = np.where(mask == 0, 0, df_img)
+  mean = np.mean(masked_img[mask != 0].reshape(-1, df_img.shape[-1]), axis=0)
+
   img_df["r"] = mean[0]
   img_df["g"] = mean[1]
   img_df["b"] = mean[2]
@@ -43,7 +48,7 @@ def fill_mean_color(img_df, mask):
 
 def get_blur_cls(img, cls, size):
   blur_img = cv2.blur(img, (size, size))
-  blur_df = rgb2df(blur_img)
+  blur_df = rgba2df(blur_img)
   blur_df["label"] = cls
   img_list = []
   mean_list = []
@@ -105,25 +110,43 @@ def split_img_df(df, show=False):
   return img_list
 
 
-def get_base(img, roop, cls_num, threshold, size, debug=False):
+def get_base(img, roop, cls_num, threshold, size, bg_split = True, debug=False):
   #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
-  df = rgb2df(img)
-  output_df = df.copy()
-  cls = KMeans(n_clusters = cls_num)
-  cls.fit(df[["r","g","b"]])
-  df["label"] = cls.labels_
-  for i in range(roop):
-    if i !=0:
-      img = df2rgba(df).astype(np.uint8)
-    blur_list, mean_list, cls_list = get_blur_cls(img, df["label"], size)
-    ciede_df = calc_ciede(mean_list, cls_list)
-    merge_dict = get_cls_update(ciede_df, df, threshold)
-    update_df, color_dict = get_update_df(df, merge_dict, mean_list, cls_list)
-    df = update_df
-    if debug==True:
-      img_plot(df)
+  if bg_split == False:
+    df = rgba2df(img)
+    df_list = [df]
+  else:
+    h_split = 256
+    v_split = 256
+    n_cluster = 500
+    alpha = 50
+    th_rate = 0.1
+    df_list = get_foreground(img, h_split, v_split, n_cluster, alpha, th_rate)
 
-  output_df["label"] = df["label"]
+  output_list = []
+  print(f"df_list:{len(df_list)}")
+  
+  for idx, df in enumerate(df_list):
+    output_df = df.copy()
+    cls = MiniBatchKMeans(n_clusters = cls_num)
+    cls.fit(df[["r","g","b"]])
+    df["label"] = cls.labels_ 
+    df["label"] = df["label"].astype(str) + f"_{idx}"
+    for i in range(roop):
+      if i !=0:
+        img = df2rgba(df).astype(np.uint8)
+      blur_list, mean_list, cls_list = get_blur_cls(img, df["label"], size)
+      ciede_df = calc_ciede(mean_list, cls_list)
+      merge_dict = get_cls_update(ciede_df, df, threshold)
+      update_df, color_dict = get_update_df(df, merge_dict, mean_list, cls_list)
+      df = update_df
+      if debug==True:
+        img_plot(df)
+    output_df["label"] = df["label"]
+    output_list.append(output_df)
+
+  output_df = pd.concat(output_list).sort_index()
+
   mean_list = []
   cls_list = list(output_df["label"].unique())
   for cls_no in tqdm(cls_list):
@@ -144,7 +167,7 @@ def get_base(img, roop, cls_num, threshold, size, debug=False):
 def get_normal_layer(input_image, df):
   base_layer_list = split_img_df(df, show=False)
 
-  org_df = rgb2df(input_image)
+  org_df = rgba2df(input_image)
   hsv_df = hsv2df(cv2.cvtColor(df2rgba(df).astype(np.uint8), cv2.COLOR_RGB2HSV))
   hsv_org = hsv2df(cv2.cvtColor(input_image, cv2.COLOR_RGB2HSV))
 
@@ -156,7 +179,7 @@ def get_normal_layer(input_image, df):
   bright_layer_list = split_img_df(bright_df, show=False)
 
   hsv_org["shadow_flg"] = hsv_df["v"] >= hsv_org["v"]
-  shadow_df = rgb2df(input_image)
+  shadow_df = rgba2df(input_image)
   shadow_df["shadow_flg"] = hsv_org["shadow_flg"]
   shadow_df["a"] = shadow_df.apply(lambda x: 255 if x["shadow_flg"] == True else 0, axis=1)
   shadow_df["label"] = df["label"]
@@ -168,7 +191,7 @@ def get_normal_layer(input_image, df):
 def get_composite_layer(input_image, df):
   base_layer_list = split_img_df(df, show=False)
 
-  org_df = rgb2df(input_image)
+  org_df = rgba2df(input_image)
 
   org_df["r"] = org_df["r"].apply(lambda x:int(x))
   org_df["g"] = org_df["g"].apply(lambda x:int(x))

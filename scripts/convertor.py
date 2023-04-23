@@ -13,6 +13,19 @@ def skimage_rgb2lab(rgb):
 def rgb2df(img):
   h, w, _ = img.shape
   x_l, y_l = np.meshgrid(np.arange(h), np.arange(w), indexing='ij')
+  r, g, b = img[:,:,0], img[:,:,1], img[:,:,2]
+  df = pd.DataFrame({
+      "x_l": x_l.ravel(),
+      "y_l": y_l.ravel(),
+      "r": r.ravel(),
+      "g": g.ravel(),
+      "b": b.ravel(),
+  })
+  return df
+
+def rgba2df(img):
+  h, w, _ = img.shape
+  x_l, y_l = np.meshgrid(np.arange(h), np.arange(w), indexing='ij')
   r, g, b, a = img[:,:,0], img[:,:,1], img[:,:,2], img[:,:,3]
   df = pd.DataFrame({
       "x_l": x_l.ravel(),

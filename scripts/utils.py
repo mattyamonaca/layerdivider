@@ -6,6 +6,11 @@ from convertor import df2rgba
 from pytoshop import layers
 import pytoshop
 
+from psd_tools import PSDImage 
+from psd_tools.psd.layer_and_mask import LayerRecord
+from psd_tools.constants import BlendMode
+from PIL import Image
+
 import random, string
 import os
 
@@ -18,7 +23,6 @@ def img_plot(df):
   img = df2rgba(df).astype(np.uint8)
   plt.imshow(img)
   plt.show()
-
 
 
 def add_psd(psd, img, name, mode):
@@ -52,3 +56,4 @@ def save_psd(input_image, layers, names, modes):
       psd.write(fd2)  
 
   return f"{path}/output/output_{name}.psd"
+

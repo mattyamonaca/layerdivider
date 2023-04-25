@@ -9,9 +9,9 @@ import gradio as gr
 import modules.scripts as scripts
 from modules import script_callbacks
 
-from scripts.ld_processor import get_base, get_normal_layer, get_composite_layer
-from scripts.ld_convertor import pil2cv, cv2pil, df2bgra
-from scripts.ld_utils import save_psd
+from ldivider.ld_processor import get_base, get_normal_layer, get_composite_layer
+from ldivider.ld_convertor import pil2cv, cv2pil, df2bgra
+from ldivider.ld_utils import save_psd
 from modules.paths_internal import extensions_dir
 from collections import OrderedDict
 

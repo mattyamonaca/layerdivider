@@ -6,9 +6,6 @@ from ldivider.ld_convertor import df2rgba
 from pytoshop import layers
 import pytoshop
 
-from psd_tools import PSDImage 
-from psd_tools.psd.layer_and_mask import LayerRecord
-from psd_tools.constants import BlendMode
 from PIL import Image
 
 import random, string

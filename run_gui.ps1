@@ -1,3 +1,3 @@
 Set-Location $PSScriptRoot
 .\venv\Scripts\activate
-python.exe launch.py $args
+python.exe demo.py $args

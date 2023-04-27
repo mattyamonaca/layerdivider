@@ -6,3 +6,6 @@ scikit-image==0.19.3
 Pillow==9.4.0
 tqdm==4.63.0
 pytoshop==1.2.1
+onnx
+onnxruntime-gpu
+huggingface_hub

@@ -1,21 +1,26 @@
 from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
-from modules.safe import unsafe_torch_load, load
 import numpy as np
 import copy
 from PIL import Image
 import pickle
 import torch
 
-def get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area, model_path):
+def get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area, model_path, exe_mode):
+
     sam_checkpoint = f"{model_path}/sam_vit_h_4b8939.pth"
     device = "cuda"
     model_type = "default"
 
-    torch.load = unsafe_torch_load
-    sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
-    sam.to(device=device)
-    torch.load = load
-
+    if exe_mode == "extension":
+        from modules.safe import unsafe_torch_load, load        
+        torch.load = unsafe_torch_load
+        sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
+        sam.to(device=device)
+        torch.load = load
+    else
+        sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
+        sam.to(device=device)
+        
     mask_generator = SamAutomaticMaskGenerator(
             model=sam,
             pred_iou_thresh=pred_iou_thresh,

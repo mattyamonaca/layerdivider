@@ -44,25 +44,25 @@ def segment_image(input_image, pred_iou_thresh, stability_score_thresh, crop_n_l
 
 def divide_layer(divide_mode, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th):
     if divide_mode == "segment_mode":
-        return self.segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th)
+        return segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th)
     elif divide_mode == "color_base_mode":
-        return self.color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg)
+        return color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg)
 
 
 def segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th):
     image = pil2cv(input_image)
-    self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
+    input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
     masks = load_masks(output_dir)
 
-    df = get_seg_base(self.input_image, masks, area_th)
+    df = get_seg_base(input_image, masks, area_th)
 
     
     base_image = cv2pil(df2bgra(df))
     image = cv2pil(image)
     if layer_mode == "composite":
-        base_layer_list, shadow_layer_list, bright_layer_list, addition_layer_list, subtract_layer_list = get_composite_layer(self.input_image, df)
+        base_layer_list, shadow_layer_list, bright_layer_list, addition_layer_list, subtract_layer_list = get_composite_layer(input_image, df)
         filename = save_psd(
-            self.input_image,
+            input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list, subtract_layer_list, addition_layer_list],
             ["base", "screen", "multiply", "subtract", "addition"],
             [BlendMode.normal, BlendMode.screen, BlendMode.multiply, BlendMode.subtract, BlendMode.linear_dodge],
@@ -74,9 +74,9 @@ def segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size,
         divide_folder(filename, input_dir)
         return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
     elif layer_mode == "normal":
-        base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(self.input_image, df)
+        base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(input_image, df)
         filename = save_psd(
-            self.input_image,
+            input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list],
             ["base", "bright", "shadow"],
             [BlendMode.normal, BlendMode.normal, BlendMode.normal],
@@ -93,16 +93,16 @@ def segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size,
     
 def color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg):
     image = pil2cv(input_image)
-    self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
+    input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 
-    df = get_base(self.input_image, loops, init_cluster, ciede_threshold, blur_size, h_split, v_split, n_cluster, alpha, th_rate, split_bg, False)        
+    df = get_base(input_image, loops, init_cluster, ciede_threshold, blur_size, h_split, v_split, n_cluster, alpha, th_rate, split_bg, False)        
     
     base_image = cv2pil(df2bgra(df))
     image = cv2pil(image)
     if layer_mode == "composite":
-        base_layer_list, shadow_layer_list, bright_layer_list, addition_layer_list, subtract_layer_list = get_composite_layer(self.input_image, df)
+        base_layer_list, shadow_layer_list, bright_layer_list, addition_layer_list, subtract_layer_list = get_composite_layer(input_image, df)
         filename = save_psd(
-            self.input_image,
+            input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list, subtract_layer_list, addition_layer_list],
             ["base", "screen", "multiply", "subtract", "addition"],
             [BlendMode.normal, BlendMode.screen, BlendMode.multiply, BlendMode.subtract, BlendMode.linear_dodge],
@@ -112,9 +112,9 @@ def color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_si
         base_layer_list = [cv2pil(layer) for layer in base_layer_list]
         return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
     elif layer_mode == "normal":
-        base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(self.input_image, df)
+        base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(input_image, df)
         filename = save_psd(
-            self.input_image,
+            input_image,
             [base_layer_list, bright_layer_list, shadow_layer_list],
             ["base", "bright", "shadow"],
             [BlendMode.normal, BlendMode.normal, BlendMode.normal],
@@ -126,7 +126,7 @@ def color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_si
         return None
 
 def on_ui_tabs():
-    with self.demo:
+    with gr.Blocks(analytics_enabled=False) as LayerDivider:
         with gr.Row():
             with gr.Column():
                 input_image = gr.Image(type="pil")
@@ -173,12 +173,12 @@ def on_ui_tabs():
                     output_file = gr.File()
                 
         submit.click(
-            self.divide_layer, 
+            divide_layer, 
             inputs=[divide_mode, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th], 
             outputs=[output_0, output_1, output_2, output_3, output_file]
         )
         segment.click(
-            self.segment_image,
+            segment_image,
             inputs=[input_image, pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area], 
             outputs=[SAM_output]
         )

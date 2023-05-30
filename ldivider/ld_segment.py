@@ -17,7 +17,7 @@ def get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, c
         sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
         sam.to(device=device)
         torch.load = load
-    else
+    else:
         sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
         sam.to(device=device)
         

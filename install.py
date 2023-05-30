@@ -26,3 +26,9 @@ if not launch.is_installed("scikit-learn"):
 
 if not launch.is_installed("pytoshop"):
     launch.run_pip("install pytoshop", "Installing pytoshop...")
+
+if not launch.is_installed("gradio"):
+    launch.run_pip("install gradio", "Installing gradio...")
+
+if not launch.is_installed("psd-tools"):
+    launch.run_pip("install psd-tools", "Installing psd-tools...")

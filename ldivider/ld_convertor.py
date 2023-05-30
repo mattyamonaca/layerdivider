@@ -23,6 +23,18 @@ def rgb2df(img):
   })
   return df
 
+def mask2df(mask):
+  h, w = mask.shape
+  x_l, y_l = np.meshgrid(np.arange(h), np.arange(w), indexing='ij')
+  flg = mask.astype(int)
+  df = pd.DataFrame({
+      "x_l_m": x_l.ravel(),
+      "y_l_m": y_l.ravel(),
+      "m_flg": flg.ravel(),
+  })
+  return df
+
+
 def rgba2df(img):
   h, w, _ = img.shape
   x_l, y_l = np.meshgrid(np.arange(h), np.arange(w), indexing='ij')

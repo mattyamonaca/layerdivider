@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from ldivider.ld_convertor import df2rgba
 
 from pytoshop import layers
+from pytoshop.user import nested_layers
 import pytoshop
 
 from PIL import Image
@@ -11,6 +12,11 @@ from PIL import Image
 import random, string
 import os
 
+import psd_tools
+from psd_tools.psd import PSD
+
+
+import pickle
 def randomname(n):
    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
    return ''.join(randlst)
@@ -35,15 +41,30 @@ def add_psd(psd, img, name, mode):
                                   name=name, 
                                   opacity=255, 
                                   )
+  #gp = nested_layers.Group() 
+  #gp.layers = [new_layer]
   psd.layer_and_mask_info.layer_info.layer_records.append(new_layer)
   return psd
 
-def save_psd(input_image, layers, names, modes, output_dir):
-  psd = pytoshop.core.PsdFile(num_channels=3, height=input_image.shape[0], width=input_image.shape[1])
+def load_masks(output_dir):
+  with open(f'{output_dir}/tmp/seg_layer/sorted_masks.pkl', 'rb') as f:
+    masks = pickle.load(f)
+  return masks
 
-  for idx, img_list in enumerate(layers):
-      for num, output in enumerate(img_list):
-          psd = add_psd(psd, output, names[idx] + str(num), modes[idx])
+def save_psd(input_image, layers, names, modes, output_dir, layer_mode):
+  psd = pytoshop.core.PsdFile(num_channels=3, height=input_image.shape[0], width=input_image.shape[1])
+  if layer_mode == "normal":
+    for idx, output in enumerate(layers[0]):
+      psd = add_psd(psd, layers[0][idx], names[0] + str(idx), modes[0])
+      psd = add_psd(psd, layers[1][idx], names[1] + str(idx), modes[1])
+      psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[2])
+  else:
+    for idx, output in enumerate(layers[0]):
+      psd = add_psd(psd, layers[0][idx], names[0] + str(idx), modes[0])
+      psd = add_psd(psd, layers[1][idx], names[1] + str(idx), modes[1])
+      psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[2])
+      psd = add_psd(psd, layers[1][idx], names[1] + str(idx), modes[3])
+      psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[4])
           
   name = randomname(10)
 
@@ -51,4 +72,49 @@ def save_psd(input_image, layers, names, modes, output_dir):
       psd.write(fd2)  
 
   return f"{output_dir}/output_{name}.psd"
+
+def divide_folder(psd_path, input_dir):
+  with open(f'{input_dir}/empty.psd', "rb") as fd:
+    psd_base = PSD.read(fd)
+  with open(psd_path, "rb") as fd:
+    psd_image = PSD.read(fd)
+
+  base_records_list = list(psd_base.layer_and_mask_information.layer_info.layer_records)
+  image_records_list = list(psd_image.layer_and_mask_information.layer_info.layer_records)
+
+  merge_list = []
+  for idx, record in enumerate(image_records_list):
+      if idx % 3 == 0:
+          merge_list.append(base_records_list[0])
+      merge_list.append(record)
+      if idx % 3 == 2:
+          merge_list.append(base_records_list[2])
+
+  psd_image.layer_and_mask_information.layer_info.layer_records = psd_tools.psd.layer_and_mask.LayerRecords(merge_list)
+  psd_image.layer_and_mask_information.layer_info.layer_count = len(psd_image.layer_and_mask_information.layer_info.layer_records)
+
+  folder_channel = psd_base.layer_and_mask_information.layer_info.channel_image_data[0]
+  image_channel = psd_image.layer_and_mask_information.layer_info.channel_image_data
+
+  channel_list = []
+  for idx, channel in enumerate(image_channel):
+      if idx % 3 == 0:
+          channel_list.append(folder_channel)
+      channel_list.append(channel)
+      if idx % 3 == 2:
+          channel_list.append(folder_channel)
+
+  psd_image.layer_and_mask_information.layer_info.channel_image_data =  psd_tools.psd.layer_and_mask.ChannelImageData(channel_list)
+  with open(psd_path, 'wb') as fd:
+      psd_image.write(fd)  
+
+  return psd_path
+
+
+
+  
+
+
+
+
 

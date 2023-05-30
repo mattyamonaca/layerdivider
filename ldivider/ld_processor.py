@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from skimage import color 
-from ldivider.ld_convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df, rgb2df
+from ldivider.ld_convertor import skimage_rgb2lab, df2rgba, rgba2df, hsv2df, rgb2df, mask2df
 from ldivider.ld_utils import img_plot
 from ldivider.bg_remover import get_foreground
 
@@ -111,15 +111,12 @@ def split_img_df(df, show=False):
 
 
 def get_base(img, loops, cls_num, threshold, size, h_split, v_split, n_cluster, alpha, th_rate, bg_split=True, debug=False):
-  #img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
-  #
   if bg_split == False:
     df = rgba2df(img)
     df_list = [df]
   else:
     df_list = get_foreground(img, h_split, v_split, n_cluster, alpha, th_rate)
 
-  print()
   output_list = []
 
   for idx, df in enumerate(df_list):
@@ -139,6 +136,7 @@ def get_base(img, loops, cls_num, threshold, size, h_split, v_split, n_cluster, 
       if debug==True:
         img_plot(df)
     output_df["label"] = df["label"]
+    output_df["layer_no"] = idx 
     output_list.append(output_df)
 
   output_df = pd.concat(output_list).sort_index()
@@ -159,6 +157,30 @@ def get_base(img, loops, cls_num, threshold, size, h_split, v_split, n_cluster, 
   
   return output_df
 
+def set_label(x, idx):
+  if x["m_flg"] == True:
+    return idx
+  else :
+    return x["label"]
+
+def mode_fast(series):
+    return series.mode().iloc[0]
+
+def get_seg_base(input_image, masks, th):
+  df = rgba2df(input_image)
+  df["label"] = -1
+  for idx, mask in tqdm(enumerate(masks)):
+    if int(mask["area"] < th):
+      continue
+    mask_df = mask2df(mask["segmentation"])
+    df = df.merge(mask_df, left_on=["x_l", "y_l"], right_on=["x_l_m", "y_l_m"], how="inner")
+    df["label"] = np.where(df["m_flg"] == True, idx, df["label"])
+    df.drop(columns=["x_l_m", "y_l_m", "m_flg"], inplace=True)
+
+  df['r'] = df.groupby('label')['r'].transform(mode_fast)
+  df['g'] = df.groupby('label')['g'].transform(mode_fast)
+  df['b'] = df.groupby('label')['b'].transform(mode_fast)
+  return df
 
 def get_normal_layer(input_image, df):
   base_layer_list = split_img_df(df, show=False)
@@ -170,17 +192,17 @@ def get_normal_layer(input_image, df):
   hsv_org["bright_flg"] = hsv_df["v"] < hsv_org["v"]
   bright_df = org_df.copy()
   bright_df["bright_flg"] = hsv_org["bright_flg"]
-  bright_df["a"] = bright_df.apply(lambda x: 255 if x["bright_flg"] == True else 0, axis=1)
+  bright_df["a"] = np.where(bright_df["bright_flg"] == True, 255, 0)
   bright_df["label"] = df["label"]
   bright_layer_list = split_img_df(bright_df, show=False)
 
   hsv_org["shadow_flg"] = hsv_df["v"] >= hsv_org["v"]
   shadow_df = rgba2df(input_image)
   shadow_df["shadow_flg"] = hsv_org["shadow_flg"]
-  shadow_df["a"] = shadow_df.apply(lambda x: 255 if x["shadow_flg"] == True else 0, axis=1)
+  shadow_df["a"] = np.where(shadow_df["shadow_flg"] == True, 255, 0)
   shadow_df["label"] = df["label"]
   shadow_layer_list = split_img_df(shadow_df, show=True)
-  
+    
   return base_layer_list, bright_layer_list, shadow_layer_list
 
 

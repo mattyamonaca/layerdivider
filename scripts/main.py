@@ -35,21 +35,21 @@ class Script(scripts.Script):
   def ui(self, is_img2img):
     return ()
 
-def segment_image(self, input_image, pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area):
+def segment_image(input_image, pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area):
     mask_generator = get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area)
     masks = get_masks(pil2cv(input_image), mask_generator)
     input_image.putalpha(255)
     masked_image = show_anns(input_image, masks, output_dir)
     return masked_image
 
-def divide_layer(self, divide_mode, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th):
+def divide_layer(divide_mode, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th):
     if divide_mode == "segment_mode":
         return self.segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th)
     elif divide_mode == "color_base_mode":
         return self.color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg)
 
 
-def segment_divide(self, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th):
+def segment_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg, area_th):
     image = pil2cv(input_image)
     self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
     masks = load_masks(output_dir)
@@ -91,7 +91,7 @@ def segment_divide(self, input_image, loops, init_cluster, ciede_threshold, blur
 
 
     
-def color_base_divide(self, input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg):
+def color_base_divide(input_image, loops, init_cluster, ciede_threshold, blur_size, layer_mode, h_split, v_split, n_cluster, alpha, th_rate, split_bg):
     image = pil2cv(input_image)
     self.input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGBA)
 

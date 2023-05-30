@@ -4,8 +4,8 @@ import copy
 from PIL import Image
 import pickle
 
-def get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area):
-    sam_checkpoint = "./segment_model/sam_vit_h_4b8939.pth"
+def get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area, model_path):
+    sam_checkpoint = f"{model_path}/segment_model/sam_vit_h_4b8939.pth"
     device = "cuda"
     model_type = "default"
     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)

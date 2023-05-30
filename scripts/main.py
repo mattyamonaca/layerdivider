@@ -27,6 +27,8 @@ output_dir = os.path.join(
     extensions_dir, "layerdivider/output")
 input_dir = os.path.join(
     extensions_dir, "layerdivider/input")
+model_dir = os.path.join(
+    extensions_dir, "layerdivider/segment_model")
 
 class Script(scripts.Script):
   def __init__(self) -> None:
@@ -41,7 +43,7 @@ class Script(scripts.Script):
   def ui(self, is_img2img):
     return ()
 
-def segment_image(input_image, pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area):
+def segment_image(input_image, pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area, model_dir):
     mask_generator = get_mask_generator(pred_iou_thresh, stability_score_thresh, crop_n_layers, crop_n_points_downscale_factor, min_mask_region_area)
     masks = get_masks(pil2cv(input_image), mask_generator)
     input_image.putalpha(255)

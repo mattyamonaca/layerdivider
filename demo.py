@@ -16,7 +16,7 @@ import numpy as np
 path = os.getcwd()
 output_dir = f"{path}/output"
 input_dir = f"{path}/input"
-
+model_dir = f"{path}/segment_model"
 class webui:
     def __init__(self):
         self.demo = gr.Blocks()

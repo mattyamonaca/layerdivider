@@ -21,6 +21,7 @@ from pytoshop.enums import BlendMode
 model_cache = OrderedDict()
 output_dir = os.path.join(
     extensions_dir, "layerdivider/output")
+input_dir = f"{path}/input"
 
 class Script(scripts.Script):
   def __init__(self) -> None:

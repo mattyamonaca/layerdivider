@@ -32,3 +32,6 @@ if not launch.is_installed("gradio"):
 
 if not launch.is_installed("psd-tools"):
     launch.run_pip("install psd-tools", "Installing psd-tools...")
+
+if not launch.is_installed("segment_anything"):
+    launch.run_pip("install git+https://github.com/facebookresearch/segment-anything.git", "Installing segment_anything...")

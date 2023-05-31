@@ -165,8 +165,8 @@ def on_ui_tabs():
                     SAM_output = gr.Image(type="pil")
                     pred_iou_thresh = gr.Slider(0, 1, value=0.8, step=0.01, label="pred_iou_thresh", show_label=True)
                     stability_score_thresh = gr.Slider(0, 1, value=0.8, step=0.01, label="stability_score_thresh", show_label=True)
-                    crop_n_layers = gr.Slider(1, 10, value=1, step=1, label="crop_n_layers", show_label=True)
-                    crop_n_points_downscale_factor = gr.Slider(1, 10, value=2, step=1, label="crop_n_points_downscale_factor", show_label=True)
+                    crop_n_layers = gr.Slider(0, 10, value=0, step=1, label="crop_n_layers", show_label=True)
+                    crop_n_points_downscale_factor = gr.Slider(1, 10, value=1, step=1, label="crop_n_points_downscale_factor", show_label=True)
                     min_mask_region_area = gr.Slider(1, 1000, value=100, step=1, label="min_mask_region_area", show_label=True)
                     segment = gr.Button(value="Segment")
                     with gr.Tab("output"):

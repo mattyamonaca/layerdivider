@@ -138,7 +138,7 @@ def on_ui_tabs():
         with gr.Row():
             with gr.Column():
                 input_image = gr.Image(type="pil")
-                divide_mode = gr.Dropdown(["segment_mode", "color_base_mode"], value = "segment_mode", label="output_layer_mode", show_label=True)
+                divide_mode = gr.Dropdown(["segment_mode", "color_base_mode"], value = "segment_mode", label="divide_mode", show_label=True)
 
                 with gr.Accordion("Segment Settings", open=True):
                     area_th = gr.Slider(1, 100000, value=20000, step=100, label="area_threshold", show_label=True)

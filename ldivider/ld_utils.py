@@ -31,23 +31,24 @@ def img_plot(df):
 def add_psd(psd, img, name, mode):
 
   layer_1 = layers.ChannelImageData(image=img[:, :, 3], compression=1)
-  layer0 = layers.ChannelImageData(image=img[:, :, 0], compression=1) 
-  layer1 = layers.ChannelImageData(image=img[:, :, 1], compression=1) 
-  layer2 = layers.ChannelImageData(image=img[:, :, 2], compression=1) 
+  layer0 = layers.ChannelImageData(image=img[:, :, 0], compression=1)
+  layer1 = layers.ChannelImageData(image=img[:, :, 1], compression=1)
+  layer2 = layers.ChannelImageData(image=img[:, :, 2], compression=1)
 
-  new_layer = layers.LayerRecord(channels={-1: layer_1, 0: layer0, 1: layer1, 2: layer2}, 
-                                  top=0, bottom=img.shape[0], left=0, right=img.shape[1], 
+  new_layer = layers.LayerRecord(channels={-1: layer_1, 0: layer0, 1: layer1, 2: layer2},
+                                  top=0, bottom=img.shape[0], left=0, right=img.shape[1],
                                   blend_mode=mode,
-                                  name=name, 
-                                  opacity=255, 
+                                  name=name,
+                                  opacity=255,
                                   )
-  #gp = nested_layers.Group() 
+  #gp = nested_layers.Group()
   #gp.layers = [new_layer]
   psd.layer_and_mask_info.layer_info.layer_records.append(new_layer)
   return psd
 
 def load_masks(output_dir):
-  with open(f'{output_dir}/tmp/seg_layer/sorted_masks.pkl', 'rb') as f:
+  pkl_path = os.path.join(output_dir, "tmp", "seg_layer", "sorted_masks.pkl")
+  with open(pkl_path, 'rb') as f:
     masks = pickle.load(f)
   return masks
 
@@ -65,11 +66,11 @@ def save_psd(input_image, layers, names, modes, output_dir, layer_mode):
       psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[2])
       psd = add_psd(psd, layers[1][idx], names[1] + str(idx), modes[3])
       psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[4])
-          
+
   name = randomname(10)
 
   with open(f"{output_dir}/output_{name}.psd", 'wb') as fd2:
-      psd.write(fd2)  
+      psd.write(fd2)
 
   return f"{output_dir}/output_{name}.psd"
 
@@ -106,15 +107,6 @@ def divide_folder(psd_path, input_dir):
 
   psd_image.layer_and_mask_information.layer_info.channel_image_data =  psd_tools.psd.layer_and_mask.ChannelImageData(channel_list)
   with open(psd_path, 'wb') as fd:
-      psd_image.write(fd)  
+      psd_image.write(fd)
 
   return psd_path
-
-
-
-  
-
-
-
-
-

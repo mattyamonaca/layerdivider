@@ -6,7 +6,7 @@ import pickle
 import torch
 import os
 
-def get_mask_generator(pred_iou_thresh, stability_score_thresh, min_mask_region_area, model_path, exe_mode, crop_n_layers=0, crop_n_points_downscale_factor=1):
+def get_mask_generator(pred_iou_thresh, stability_score_thresh, min_mask_region_area, model_path, exe_mode):
 
     sam_checkpoint = os.path.join(model_path, "sam_vit_h_4b8939.pth")
     device = "cuda"
@@ -25,8 +25,6 @@ def get_mask_generator(pred_iou_thresh, stability_score_thresh, min_mask_region_
     mask_generator = SamAutomaticMaskGenerator(
             model=sam,
             pred_iou_thresh=pred_iou_thresh,
-            stability_score_thresh=stability_score_thresh,
-            crop_n_points_downscale_factor=crop_n_points_downscale_factor,
             stability_score_thresh=stability_score_thresh,
             min_mask_region_area=min_mask_region_area,
         )

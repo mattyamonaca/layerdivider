@@ -11,7 +11,6 @@ pip install --upgrade -r requirements.txt
 
 Write-Output "Installing torch+cuda"
 pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
-Check "torch Install failed，please delete venv and reinstall"
 
 Write-Output "Searching segment model..."
 $url="https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"

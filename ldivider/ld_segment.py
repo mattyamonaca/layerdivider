@@ -4,15 +4,16 @@ import copy
 from PIL import Image
 import pickle
 import torch
+import os
 
 def get_mask_generator(pred_iou_thresh, stability_score_thresh, min_mask_region_area, model_path, exe_mode):
 
-    sam_checkpoint = f"{model_path}/sam_vit_h_4b8939.pth"
+    sam_checkpoint = os.path.join(model_path, "sam_vit_h_4b8939.pth")
     device = "cuda"
     model_type = "default"
 
     if exe_mode == "extension":
-        from modules.safe import unsafe_torch_load, load        
+        from modules.safe import unsafe_torch_load, load
         torch.load = unsafe_torch_load
         sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
         sam.to(device=device)
@@ -20,14 +21,14 @@ def get_mask_generator(pred_iou_thresh, stability_score_thresh, min_mask_region_
     else:
         sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
         sam.to(device=device)
-    
+
     mask_generator = SamAutomaticMaskGenerator(
             model=sam,
             pred_iou_thresh=pred_iou_thresh,
             stability_score_thresh=stability_score_thresh,
             min_mask_region_area=min_mask_region_area,
         )
-    
+
     return mask_generator
 
 def get_masks(image, mask_generator):
@@ -52,10 +53,10 @@ def show_anns(image, masks, output_dir):
             img[:,:,i] = color_mask[i]
         img = np.dstack((img*255, m*255*0.35))
         img = img.astype(np.uint8)
-        
+
         mask_list.append(img)
-    
-    base_mask = image 
+
+    base_mask = image
     for mask in mask_list:
         base_mask = Image.alpha_composite(base_mask, Image.fromarray(mask))
 

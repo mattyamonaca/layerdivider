@@ -11,7 +11,7 @@ from modules import script_callbacks
 
 from ldivider.ld_convertor import pil2cv, cv2pil, df2bgra
 from ldivider.ld_processor import get_base, get_normal_layer, get_composite_layer, get_seg_base
-from ldivider.ld_utils import save_psd, load_masks, divide_folder
+from ldivider.ld_utils import save_psd, load_masks, divide_folder, load_seg_model
 from ldivider.ld_segment import get_mask_generator, get_masks, show_anns
 
 from modules.paths_internal import extensions_dir
@@ -42,6 +42,7 @@ class Script(scripts.Script):
     return ()
 
 def segment_image(input_image, pred_iou_thresh, stability_score_thresh, min_mask_region_area):
+    load_seg_model(model_dir)
     mask_generator = get_mask_generator(pred_iou_thresh, stability_score_thresh,min_mask_region_area, model_dir, "extension")
     masks = get_masks(pil2cv(input_image), mask_generator)
     input_image.putalpha(255)

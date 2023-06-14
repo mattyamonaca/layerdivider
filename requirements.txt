@@ -11,3 +11,4 @@ onnx
 onnxruntime-gpu
 huggingface_hub
 segment_anything
+requests

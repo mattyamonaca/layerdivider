@@ -4,7 +4,7 @@ sys.path.append("./scripts/")
 
 from ldivider.ld_convertor import pil2cv, cv2pil, df2bgra
 from ldivider.ld_processor import get_base, get_normal_layer, get_composite_layer, get_seg_base
-from ldivider.ld_utils import save_psd, load_masks, divide_folder
+from ldivider.ld_utils import save_psd, load_masks, divide_folder, load_seg_model
 from ldivider.ld_segment import get_mask_generator, get_masks, show_anns
 
 import cv2
@@ -17,6 +17,9 @@ path = os.getcwd()
 output_dir = f"{path}/output"
 input_dir = f"{path}/input"
 model_dir = f"{path}/segment_model"
+
+load_seg_model(model_dir)
+
 class webui:
     def __init__(self):
         self.demo = gr.Blocks()

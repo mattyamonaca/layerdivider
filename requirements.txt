@@ -7,7 +7,7 @@ Pillow==9.4.0
 tqdm==4.63.0
 pytoshop==1.2.1
 psd-tools==1.9.24
-gradio==3.28.1
+gradio==3.16.2
 gradio_client==0.2.5
 onnx
 onnxruntime-gpu

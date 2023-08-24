@@ -90,8 +90,8 @@ def save_psd(input_image, layers, names, modes, output_dir, layer_mode):
       psd = add_psd(psd, layers[0][idx], names[0] + str(idx), modes[0])
       psd = add_psd(psd, layers[1][idx], names[1] + str(idx), modes[1])
       psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[2])
-      psd = add_psd(psd, layers[1][idx], names[1] + str(idx), modes[3])
-      psd = add_psd(psd, layers[2][idx], names[2] + str(idx), modes[4])
+      psd = add_psd(psd, layers[3][idx], names[3] + str(idx), modes[3])
+      psd = add_psd(psd, layers[4][idx], names[4] + str(idx), modes[4])
 
   name = randomname(10)
 
@@ -100,21 +100,26 @@ def save_psd(input_image, layers, names, modes, output_dir, layer_mode):
 
   return f"{output_dir}/output_{name}.psd"
 
-def divide_folder(psd_path, input_dir):
+def divide_folder(psd_path, input_dir, mode):
   with open(f'{input_dir}/empty.psd', "rb") as fd:
     psd_base = PSD.read(fd)
   with open(psd_path, "rb") as fd:
     psd_image = PSD.read(fd)
+
+  if mode == "normal":
+     add_num = 3
+  else:
+     add_num = 5
 
   base_records_list = list(psd_base.layer_and_mask_information.layer_info.layer_records)
   image_records_list = list(psd_image.layer_and_mask_information.layer_info.layer_records)
 
   merge_list = []
   for idx, record in enumerate(image_records_list):
-      if idx % 3 == 0:
+      if idx % add_num == 0:
           merge_list.append(base_records_list[0])
       merge_list.append(record)
-      if idx % 3 == 2:
+      if idx % add_num == (add_num - 1):
           merge_list.append(base_records_list[2])
 
   psd_image.layer_and_mask_information.layer_info.layer_records = psd_tools.psd.layer_and_mask.LayerRecords(merge_list)
@@ -125,10 +130,10 @@ def divide_folder(psd_path, input_dir):
 
   channel_list = []
   for idx, channel in enumerate(image_channel):
-      if idx % 3 == 0:
+      if idx % add_num == 0:
           channel_list.append(folder_channel)
       channel_list.append(channel)
-      if idx % 3 == 2:
+      if idx % add_num == (add_num - 1):
           channel_list.append(folder_channel)
 
   psd_image.layer_and_mask_information.layer_info.channel_image_data =  psd_tools.psd.layer_and_mask.ChannelImageData(channel_list)

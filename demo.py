@@ -62,7 +62,7 @@ class webui:
 
             )
             base_layer_list = [cv2pil(layer) for layer in base_layer_list]
-            divide_folder(filename, input_dir)
+            divide_folder(filename, input_dir, layer_mode)
             return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
         elif layer_mode == "normal":
             base_layer_list, bright_layer_list, shadow_layer_list = get_normal_layer(self.input_image, df)
@@ -75,7 +75,7 @@ class webui:
                 layer_mode
             )
 
-            divide_folder(filename, input_dir)
+            divide_folder(filename, input_dir, layer_mode)
             return [image, base_image], base_layer_list, bright_layer_list, shadow_layer_list, filename
         else:
             return None

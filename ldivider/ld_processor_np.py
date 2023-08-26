@@ -69,13 +69,12 @@ def get_base_np(img: np.ndarray, loop, cls_num, threshold, size, debug=False, km
     else:
         labels = kmeans.labels_
 
-    unflatten_cls = set(np.unique(kmeans.labels_))
     img_np = rearrange([img], 'n h w c -> n c h w').astype(np.float32)
     labels_np = labels.reshape((1, 1, im_h, im_w)).astype(np.float32)
 
     assert loop > 0
+    img_np_ori = np.copy(img_np)
     for i in range(loop):
-        img_np_ori = np.copy(img_np)
         rgb_means, cls_list, cls_counts, masks = get_blur_np(img_np, labels_np, size)
         ciede_df = calc_ciede(rgb_means, cls_list)
         cls2rgb, cls2counts, cls2masks = {}, {}, {}
@@ -85,17 +84,18 @@ def get_base_np(img: np.ndarray, loop, cls_num, threshold, size, debug=False, km
             cls2masks[c] = mask[None, ...]
 
         merge_dict = get_cls_update(ciede_df, threshold, cls2counts)
-        tgt2merge = {}
+        tgt2merge, notmerged = {}, set(cls_list)
         for k, v in merge_dict.items():
             if v not in tgt2merge:
                 tgt2merge[v] = []
+                notmerged.remove(v)
             tgt2merge[v].append(k)
+            notmerged.remove(k)
+        for k in notmerged:
+            tgt2merge[k] = []
         
         for tgtc, srcc_list in tgt2merge.items():
-            if i == 0:
-                mask = cls2masks[tgtc]
-            else:
-                mask = np.zeros((1, im_h, im_w), dtype=np.bool_)
+            mask = cls2masks[tgtc]
             for srcc in srcc_list:
                 mask = np.bitwise_or(mask, cls2masks[srcc])
             labels_np[mask] = tgtc

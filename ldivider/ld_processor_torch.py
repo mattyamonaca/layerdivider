@@ -56,8 +56,8 @@ def get_base_torch(img: np.ndarray, loop, cls_num, threshold, size, kmeans_sampl
     labels_torch = torch.from_numpy(labels.reshape((1, 1, im_h, im_w))).to(dtype=torch.float32, device=device)
 
     assert loop > 0
+    img_torch_ori = img_torch.clone()
     for i in range(loop):
-        img_torch_ori = img_torch.clone()
         rgb_means, cls_list, cls_counts, masks = get_blur_torch(img_torch, labels_torch, size)
         ciede_df = calc_ciede(rgb_means, cls_list)
         cls2rgb, cls2counts, cls2masks = {}, {}, {}
@@ -66,16 +66,18 @@ def get_base_torch(img: np.ndarray, loop, cls_num, threshold, size, kmeans_sampl
             cls2counts[c] = count
             cls2masks[c] = mask[None, ...]
         merge_dict = get_cls_update(ciede_df, threshold, cls2counts)
-        tgt2merge = {}
+        tgt2merge, notmerged = {}, set(cls_list)
         for k, v in merge_dict.items():
             if v not in tgt2merge:
                 tgt2merge[v] = []
+                notmerged.remove(v)
             tgt2merge[v].append(k)
+            notmerged.remove(k)
+        for k in notmerged:
+            tgt2merge[k] = []
+
         for tgtc, srcc_list in tgt2merge.items():
-            if i == 0:
-                mask = cls2masks[tgtc]
-            else:
-                mask = torch.zeros((1, im_h, im_w), dtype=torch.bool)
+            mask = cls2masks[tgtc]
             for srcc in srcc_list:
                 mask = torch.bitwise_or(mask, cls2masks[srcc])
             labels_torch.masked_fill_(mask, tgtc)
